@@ -1,0 +1,44 @@
+require 'csv'
+
+
+puts "Hello, Welcome to Juan's Gradebook"
+
+gradeBook = {}  # dictionary where we will save our student's data
+
+file_location = "/Users/Xx2MOE4xX/Desktop/Gradebook.csv"
+
+
+################## Read Grades from the file! #####################
+CSV.foreach(file_location) do |row|
+    name = row[0]
+    grade = row[1].to_i
+  gradeBook[name] = grade
+end
+
+################## Enter Grades from the user! #####################
+loop do
+
+  print "Enter Student's name: "
+  name = gets.chomp
+  break if name == "done"
+  print "Enter Student's grade: "
+  grade = gets.chomp.to_i
+
+  gradeBook[name] = grade
+
+end
+
+puts "=========================================="
+
+gradeBook.each do |name,grade|
+
+  puts "#{name} #{grade}"
+end
+
+
+################### Append new Grades to CSV file! ####################
+CSV.open(file_location, "wb") do |csv|
+    gradeBook.each do |name, grade|
+      csv << [name, grade]
+    end
+end
